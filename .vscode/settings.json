@@ -1,0 +1,19 @@
+{
+  "sqltools.connections": [
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "ssh": "Disabled",
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 3306,
+      "driver": "MySQL",
+      "name": "Himadri_Mondal",
+      "database": "Himadri_Mondal",
+      "username": "Himadri_Mondal",
+      "password": "RakhiBipin19761965@"
+    }
+  ]
+}
