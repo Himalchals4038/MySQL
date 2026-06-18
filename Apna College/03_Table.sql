@@ -30,7 +30,6 @@ CREATE TABLE student(
     ) STORED,
     INDEX idx_overall_percentage (overall_percentage DESC)
 );
-
 INSERT INTO student (name, age, gender, email, attendance_percent, english, physics, chemistry, maths, biology, computer_science) VALUES
 ('Mrinalini', 23, 'female', 'mrinal@college.com', 85, 88, 92, 85, 95, 89, 94),
 ('Souharda', 21, 'male', 'souhardo@college.com', 78, 75, 80, 72, 88, 79, 85),
@@ -72,11 +71,10 @@ INSERT INTO student (name, age, gender, email, attendance_percent, english, phys
 ('Asha', 22, 'female', 'asha@college.com', 71, 64, 66, 61, 70, 65, 74),
 ('Tarun', 23, 'male', 'tarun@college.com', 80, 77, 80, 75, 83, 79, 85),
 ('Seema', 20, 'female', 'seema@college.com', 92, 89, 91, 87, 94, 90, 95);
-
 CREATE VIEW student_dashboard AS
 SELECT 
     *,
     RANK() OVER (ORDER BY overall_percentage DESC) AS class_rank
 FROM student;
-
 SELECT * FROM student_dashboard;
+drop database student;
