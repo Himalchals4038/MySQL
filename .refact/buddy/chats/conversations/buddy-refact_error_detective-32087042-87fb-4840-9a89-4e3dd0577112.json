@@ -1,0 +1,334 @@
+{
+  "id": "buddy-refact_error_detective-32087042-87fb-4840-9a89-4e3dd0577112",
+  "title": "Error Detective",
+  "model": "openrouter/poolside/laguna-m.1:free",
+  "mode": "buddy",
+  "tool_use": "cat,search_pattern,search_symbol_definition,tree,refact_engine_clone,refact_engine_search,refact_engine_cat,buddy_runtime_event,buddy_runtime_event,buddy_open_issue,buddy_memory_create",
+  "messages": [
+    {
+      "role": "system",
+      "content": "%BUDDY_PERSONALITY%\n\nYou inspect Refact engine errors, logs, and source code for likely root causes.\nPrefer narrow evidence, concrete file paths, and small fixes over broad guesses.\nUse refact_engine_* tools when the local workspace does not contain the needed engine code.\n\nSteps:\n1. Review the task and evidence to identify the failing component.\n2. Inspect relevant local or mirrored Refact engine files and definitions.\n3. Open an issue, memory, or runtime event only when the evidence supports it.\n4. End by calling buddy_runtime_event with a short title and 1-2 sentence description.\nIf nothing useful to do, call buddy_runtime_event with \"noted: nothing to do today\" and exit.\n"
+    },
+    {
+      "role": "user",
+      "content": "Workflow: refact_error_detective\nTitle: Error Detective\nSignal hash: 384cb06320f0aab33c07865d52e5dc335e86bb4b161f41721993d27acc4cf59d\nPriority: high\n\nTask:\nAnalyze the diagnostic pattern using only the summaries below. Explain the likely failure cluster, risk, and the smallest safe next checks. Do not invent log details that are not in evidence.\n\nEvidence:\nDiagnostic signal:\n- repeated_error_type: generic\n- repeated_count: 3\n- high_or_critical_count: 6\n- summaries:\n  - type=generic severity=High source=unknown timestamp=2026-06-19T03:12:21.448640600+00:00 preview=Context too large and no eligible segment summary could be applied. Original error: LLM error (400 Bad Request): \"This endpoint's maximum context length is 131072 tokens. However, you requested about 147944 tokens (4496 of te\n...[truncated]\n  - type=llm_error severity=High source=chat/generation.rs timestamp=2026-06-19T03:12:21.320617400+00:00 preview=Context too large and no eligible segment summary could be applied. Original error: LLM error (400 Bad Request): \"This endpoint's maximum context length is 131072 tokens. However, you requested about 147944 tokens (4496 of te\n...[truncated]\n  - type=generic severity=High source=unknown timestamp=2026-06-19T03:10:36.731716700+00:00 preview=Context too large and no eligible segment summary could be applied. Original error: LLM error (400 Bad Request): \"This endpoint's maximum context length is 131072 tokens. However, you requested about 141967 tokens (3138 of te\n...[truncated]\n  - type=llm_error severity=High source=chat/generation.rs timestamp=2026-06-19T03:10:36.598946500+00:00 preview=Context too large and no eligible segment summary could be applied. Original error: LLM error (400 Bad Request): \"This endpoint's maximum context length is 131072 tokens. However, you requested about 141967 tokens (3138 of te\n...[truncated]\n  - type=generic severity=High source=unknown timestamp=2026-06-19T03:10:24.332568700+00:00 preview=Context too large and no eligible segment summary could be applied. Original error: LLM error (400 Bad Request): \"This endpoint's maximum context length is 131072 tokens. However, you requested about 142516 tokens (3622 of te\n...[truncated]\n  - type=llm_error severity=High source=chat/generation.rs timestamp=2026-06-19T03:10:24.171850600+00:00 preview=Context too large and no eligible segment summary could be applied. Original error: LLM error (400 Bad Request): \"This endpoint's maximum context length is 131072 tokens. However, you requested about 142516 tokens (3622 of te\n...[truncated]\n"
+    },
+    {
+      "message_id": "35d6f8e3-44ff-4166-8dd7-f8a49f910c19",
+      "role": "assistant",
+      "content": "\nLooking at this diagnostic pattern, I can see a clear failure cluster around context length management. Let me investigate the Refact engine code to understand the root cause.\n\n",
+      "finish_reason": "tool_calls",
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-58fd1c50ffc44fbb93218a2eed521908",
+          "index": 0,
+          "function": {
+            "arguments": "{\"branch\": \"main\"}",
+            "name": "refact_engine_clone"
+          },
+          "type": "function"
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 2587,
+        "completion_tokens": 313,
+        "total_tokens": 2905,
+        "cache_read_input_tokens": 5
+      }
+    },
+    {
+      "message_id": "23408fa5-6040-4da8-b2b2-bbb6d4cbf885",
+      "role": "tool",
+      "content": "Cloned to C:\\Users\\User\\AppData\\Local\\refact\\engine-mirror\\main",
+      "tool_call_id": "chatcmpl-tool-58fd1c50ffc44fbb93218a2eed521908",
+      "tool_failed": false
+    },
+    {
+      "message_id": "3e9afe60-adb7-43e6-a8b9-68055ff2024b",
+      "role": "assistant",
+      "content": "\n\n",
+      "finish_reason": "tool_calls",
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-a120afb16e1f4f959c735e5fd4a61aab",
+          "index": 0,
+          "function": {
+            "arguments": "{\"pattern\": \"Context too large and no eligible segment summary\", \"scope\": \".\"}",
+            "name": "refact_engine_search"
+          },
+          "type": "function"
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 2681,
+        "completion_tokens": 91,
+        "total_tokens": 2777,
+        "cache_read_input_tokens": 5
+      }
+    },
+    {
+      "message_id": "de25fcc8-bc68-4e7a-9470-544913aafeed",
+      "role": "tool",
+      "content": "refact-agent\\engine\\src\\chat\\generation.rs:943:                         \"Context too large and no eligible segment summary could be applied. Original error: {}\",",
+      "tool_call_id": "chatcmpl-tool-a120afb16e1f4f959c735e5fd4a61aab",
+      "tool_failed": false
+    },
+    {
+      "message_id": "d056fe71-deae-4f51-b43d-527ac54482dd",
+      "role": "assistant",
+      "content": "\n\n",
+      "finish_reason": "tool_calls",
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-2d36dd2833414b90af0275a23bdbe217",
+          "index": 0,
+          "function": {
+            "arguments": "{\"path\": \"refact-agent/engine/src/chat/generation.rs\", \"line1\": 920, \"line2\": 970}",
+            "name": "refact_engine_cat"
+          },
+          "type": "function"
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 2796,
+        "completion_tokens": 111,
+        "total_tokens": 2912,
+        "cache_read_input_tokens": 5
+      }
+    },
+    {
+      "message_id": "8d645626-f612-43d8-aaa0-a784ab4f74c0",
+      "role": "tool",
+      "content": "                        );\n                        {\n                            let mut session = session_arc.lock().await;\n                            session.clear_stream_for_retry();\n                            session.add_message(make_ui_only_error_message(&original_error));\n                            session.thread.reactive_compact_attempts = Some(reactive_attempt);\n                        }\n                        let compacted = crate::chat::summarization::apply_segment_summarization(\n                            gcx.clone(),\n                            &session_arc,\n                            &thread,\n                            true,\n                        )\n                        .await;\n                        if compacted {\n                            let mut session = session_arc.lock().await;\n                            session.clear_stream_for_retry();\n                            session.thread.previous_response_id = None;\n                            session.cache_guard_force_next = true;\n                            continue;\n                        }\n                    }\n                    error.message = format!(\n                        \"Context too large and no eligible segment summary could be applied. Original error: {}\",\n                        error.message\n                    );\n                }\n\n                if error.partial_output_emitted && !abort_flag.load(Ordering::SeqCst) {\n                    let original = error.message.clone();\n                    warn!(\n                        \"{} Original error: {}\",\n                        PARTIAL_OUTPUT_STREAM_ERROR, original\n                    );\n                    error.message = format!(\n                        \"{} Original error: {}\",\n                        PARTIAL_OUTPUT_STREAM_ERROR, original\n                    );\n                }\n\n                let error_message = error.message;\n\n                let task_meta_opt = {\n                    let mut session = session_arc.lock().await;\n                    if !session.abort_flag.load(Ordering::SeqCst) {\n                        let app2 = app.clone();\n                        let err_clone = error_message.clone();\n                        let chat_id2 = chat_id.clone();\n                        let chat_label2 = chat_label.clone();\n                        tokio::spawn(async move {\n                            app2.buddy_event_sink",
+      "tool_call_id": "chatcmpl-tool-2d36dd2833414b90af0275a23bdbe217",
+      "tool_failed": false
+    },
+    {
+      "message_id": "e4b23278-71fe-47f8-bdd6-cc41d0889cb9",
+      "role": "assistant",
+      "content": "\n\n",
+      "finish_reason": "tool_calls",
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-deb5615fc665402b9c008b43003ab91c",
+          "index": 0,
+          "function": {
+            "arguments": "{\"pattern\": \"apply_segment_summarization\", \"scope\": \".\"}",
+            "name": "refact_engine_search"
+          },
+          "type": "function"
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 3278,
+        "completion_tokens": 96,
+        "total_tokens": 3379,
+        "cache_read_input_tokens": 5
+      }
+    },
+    {
+      "message_id": "a78781ed-1354-4e73-944f-30b9c8542d38",
+      "role": "tool",
+      "content": "refact-agent\\engine\\src\\chat\\generation.rs:781:             crate::chat::summarization::apply_segment_summarization(\nrefact-agent\\engine\\src\\chat\\generation.rs:927:                         let compacted = crate::chat::summarization::apply_segment_summarization(\nrefact-agent\\engine\\src\\chat\\summarization.rs:974: pub async fn apply_segment_summarization(",
+      "tool_call_id": "chatcmpl-tool-deb5615fc665402b9c008b43003ab91c",
+      "tool_failed": false
+    },
+    {
+      "message_id": "2cfa1edd-7fd3-4bd7-9e1b-5dd6b070b05d",
+      "role": "assistant",
+      "content": "\n\n",
+      "finish_reason": "tool_calls",
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-cc11e4c7f4344c2ea0b8b49d50e0cb5e",
+          "index": 0,
+          "function": {
+            "arguments": "{\"path\": \"refact-agent/engine/src/chat/summarization.rs\", \"line1\": 970, \"line2\": 1020}",
+            "name": "refact_engine_cat"
+          },
+          "type": "function"
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 776,
+        "completion_tokens": 111,
+        "total_tokens": 3571,
+        "cache_read_input_tokens": 2684
+      }
+    },
+    {
+      "message_id": "acff13d6-a983-40cd-a127-10acc0fb322a",
+      "role": "tool",
+      "content": "    );\n    true\n}\n\npub async fn apply_segment_summarization(\n    gcx: Arc<GlobalContext>,\n    session_arc: &Arc<tokio::sync::Mutex<crate::chat::types::ChatSession>>,\n    thread: &crate::chat::types::ThreadParams,\n    force: bool,\n) -> bool {\n    if !should_attempt_segment_summarization(thread, force) {\n        return false;\n    }\n\n    let raw_messages = {\n        let session = session_arc.lock().await;\n        if session.tier1_compaction_disabled && !force {\n            return false;\n        }\n        if session.tier1_compact_attempts >= MAX_SEGMENT_SUMMARY_ATTEMPTS && !force {\n            return false;\n        }\n        if last_visible_has_pending_tool_calls(&session.messages) {\n            return false;\n        }\n        session.messages.clone()\n    };\n\n    let Some(segment) = first_eligible_segment(&raw_messages) else {\n        return false;\n    };\n    let effective_n_ctx = match effective_n_ctx_for_thread(gcx.clone(), thread).await {\n        Some(value) => value,\n        None => return false,\n    };\n    let pressure = estimated_context_pressure(&raw_messages, effective_n_ctx);\n    if !force && !matches!(pressure, ContextPressure::High | ContextPressure::Critical) {\n        return false;\n    }\n\n    let (model, model_n_ctx) = match resolve_summary_model(gcx.clone(), &thread.model).await {\n        Ok(value) => value,\n        Err(failure) => {\n            let mut session = session_arc.lock().await;\n            if failure.is_structural() {\n                session.tier1_compaction_disabled = true;\n            } else {\n                session.tier1_compact_attempts += 1;\n            }\n            warn!(\"Segment summarization failed before subchat: {}\", failure);\n            append_compression_failure_event(&mut session, &failure);",
+      "tool_call_id": "chatcmpl-tool-cc11e4c7f4344c2ea0b8b49d50e0cb5e",
+      "tool_failed": false
+    },
+    {
+      "message_id": "a7b73c3b-e809-4a5a-a125-67a348c11e5f",
+      "role": "assistant",
+      "content": "\n\n",
+      "finish_reason": "tool_calls",
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-f8fb2665d4ad4a86891fa267a559da09",
+          "index": 0,
+          "function": {
+            "arguments": "{\"pattern\": \"first_eligible_segment\", \"scope\": \".\"}",
+            "name": "refact_engine_search"
+          },
+          "type": "function"
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 3989,
+        "completion_tokens": 75,
+        "total_tokens": 4069,
+        "cache_read_input_tokens": 5
+      }
+    },
+    {
+      "message_id": "9ff59e95-90c0-4b02-892c-997b957bd552",
+      "role": "tool",
+      "content": "refact-agent\\engine\\src\\chat\\summarization.rs:248: fn first_eligible_segment(messages: &[ChatMessage]) -> Option<SummarySegment> {\nrefact-agent\\engine\\src\\chat\\summarization.rs:869:     let Some(segment) = first_eligible_segment(messages) else {\nrefact-agent\\engine\\src\\chat\\summarization.rs:916:     let Some(segment) = first_eligible_segment(messages) else {\nrefact-agent\\engine\\src\\chat\\summarization.rs:947:     let Some(current_segment) = first_eligible_segment(&session.messages) else {\nrefact-agent\\engine\\src\\chat\\summarization.rs:998:     let Some(segment) = first_eligible_segment(&raw_messages) else {\nrefact-agent\\engine\\src\\chat\\summarization.rs:1862:         let segment = first_eligible_segment(&session.messages).unwrap();",
+      "tool_call_id": "chatcmpl-tool-f8fb2665d4ad4a86891fa267a559da09",
+      "tool_failed": false
+    },
+    {
+      "message_id": "f378117a-72c3-4602-b2fc-7bfbbe61bcc4",
+      "role": "assistant",
+      "content": "\n\n",
+      "finish_reason": "tool_calls",
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-25a0775b90e34a6aaf54c201ecbc922a",
+          "index": 0,
+          "function": {
+            "arguments": "{\"path\": \"refact-agent/engine/src/chat/summarization.rs\", \"line1\": 240, \"line2\": 290}",
+            "name": "refact_engine_cat"
+          },
+          "type": "function"
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 4263,
+        "completion_tokens": 105,
+        "total_tokens": 4373,
+        "cache_read_input_tokens": 5
+      }
+    },
+    {
+      "message_id": "ffde2d4c-155c-485a-be2f-d331303e7a9d",
+      "role": "tool",
+      "content": "}\n\nfn segment_is_matching_summary(messages: &[ChatMessage], segment: SummarySegment) -> bool {\n    segment.start == segment.end\n        && is_segment_summary(&messages[segment.start])\n        && segment_summary_source_hash(&messages[segment.start]).is_some()\n}\n\nfn first_eligible_segment(messages: &[ChatMessage]) -> Option<SummarySegment> {\n    closed_non_user_segments(messages)\n        .into_iter()\n        .find(|segment| !segment_is_matching_summary(messages, *segment))\n}\n\nfn estimated_context_pressure(messages: &[ChatMessage], effective_n_ctx: usize) -> ContextPressure {\n    let visible_messages = filter_ui_only_messages(messages.to_vec());\n    compute_context_budget(&visible_messages, effective_n_ctx).pressure\n}\n\nfn role_label(role: &str) -> &str {\n    match role {\n        \"assistant\" => \"ASSISTANT\",\n        \"tool\" => \"TOOL_RESULT\",\n        \"diff\" => \"FILE_EDIT\",\n        \"context_file\" => \"CONTEXT_FILE\",\n        \"event\" => \"EVENT\",\n        \"error\" => \"ERROR\",\n        \"cd_instruction\" => \"INSTRUCTION\",\n        other => other,\n    }\n}\n\nfn bounded_redacted_tool_arguments(arguments: &str) -> String {\n    let scan_cap = TOOL_CALL_ARGUMENTS_MAX_CHARS.saturating_add(SEGMENT_REDACTION_SCAN_EXTRA_CHARS);\n    let (window, truncated) = bounded_redaction_window(arguments, scan_cap);\n    let mut redacted = refact_core::string_utils::redact_sensitive(window);\n    if truncated {\n        redacted.push_str(TOOL_CALL_ARGUMENTS_TRUNCATED_MARKER);\n    }\n    let truncated =\n        refact_core::string_utils::safe_truncate(&redacted, TOOL_CALL_ARGUMENTS_MAX_CHARS);\n    if truncated.len() == redacted.len() {\n        truncated.to_string()\n    } else {\n        format!(\"{}{}\", truncated, TOOL_CALL_ARGUMENTS_TRUNCATED_MARKER)\n    }\n}\n\nfn is_redaction_boundary(ch: char) -> bool {\n    ch.is_whitespace()\n        || matches!(",
+      "tool_call_id": "chatcmpl-tool-25a0775b90e34a6aaf54c201ecbc922a",
+      "tool_failed": false
+    },
+    {
+      "message_id": "86ff7bf0-b836-4a53-92dc-54ce1a16660f",
+      "role": "assistant",
+      "content": "\n\n",
+      "finish_reason": "tool_calls",
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-d6f96d6ce7844836bb9fa4c1b8c8cd35",
+          "index": 0,
+          "function": {
+            "arguments": "{\"pattern\": \"closed_non_user_segments\", \"scope\": \".\"}",
+            "name": "refact_engine_search"
+          },
+          "type": "function"
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 4830,
+        "completion_tokens": 71,
+        "total_tokens": 4906,
+        "cache_read_input_tokens": 5
+      }
+    },
+    {
+      "message_id": "d109835c-89e1-4bdf-b5d1-18e0ea38b6c5",
+      "role": "tool",
+      "content": "refact-agent\\engine\\src\\chat\\summarization.rs:172: pub fn closed_non_user_segments(messages: &[ChatMessage]) -> Vec<SummarySegment> {\nrefact-agent\\engine\\src\\chat\\summarization.rs:249:     closed_non_user_segments(messages)\nrefact-agent\\engine\\src\\chat\\summarization.rs:1325:         assert!(closed_non_user_segments(&messages).is_empty());\nrefact-agent\\engine\\src\\chat\\summarization.rs:1332:             closed_non_user_segments(&messages),\nrefact-agent\\engine\\src\\chat\\summarization.rs:1348:             closed_non_user_segments(&messages),\nrefact-agent\\engine\\src\\chat\\summarization.rs:1362:         for segment in closed_non_user_segments(&messages) {\nrefact-agent\\engine\\src\\chat\\summarization.rs:1379:             closed_non_user_segments(&messages),\nrefact-agent\\engine\\src\\chat\\summarization.rs:1395:         assert!(closed_non_user_segments(&messages).is_empty());\nrefact-agent\\engine\\src\\tools\\tool_compress_chat.rs:59:     if crate::chat::summarization::closed_non_user_segments(&messages[..cutoff]).is_empty() {",
+      "tool_call_id": "chatcmpl-tool-d6f96d6ce7844836bb9fa4c1b8c8cd35",
+      "tool_failed": false
+    },
+    {
+      "message_id": "4681b939-37fb-4610-857c-b8cf20d5982b",
+      "role": "assistant",
+      "content": "\n\n",
+      "finish_reason": "tool_calls",
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-a97e02e26836477a8d66d20182f6b454",
+          "index": 0,
+          "function": {
+            "arguments": "{\"path\": \"refact-agent/engine/src/chat/summarization.rs\", \"line1\": 170, \"line2\": 220}",
+            "name": "refact_engine_cat"
+          },
+          "type": "function"
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 5201,
+        "completion_tokens": 107,
+        "total_tokens": 5313,
+        "cache_read_input_tokens": 5
+      }
+    },
+    {
+      "message_id": "5277715c-ecca-48df-8384-67048c185491",
+      "role": "tool",
+      "content": "}\n\npub fn closed_non_user_segments(messages: &[ChatMessage]) -> Vec<SummarySegment> {\n    let user_indices: Vec<usize> = messages\n        .iter()\n        .enumerate()\n        .filter_map(|(idx, msg)| (msg.role == \"user\").then_some(idx))\n        .collect();\n    if user_indices.len() < 2 {\n        return Vec::new();\n    }\n\n    let mut segments = Vec::new();\n    for pair in user_indices.windows(2) {\n        let left_user = pair[0];\n        let right_user = pair[1];\n        let mut start = left_user + 1;\n        while start < right_user && is_excluded_from_segment(&messages[start]) {\n            start += 1;\n        }\n        let mut idx = start;\n        while idx < right_user {\n            if is_excluded_from_segment(&messages[idx]) {\n                if start < idx {\n                    segments.push(SummarySegment {\n                        start,\n                        end: idx - 1,\n                    });\n                }\n                idx += 1;\n                while idx < right_user && is_excluded_from_segment(&messages[idx]) {\n                    idx += 1;\n                }\n                start = idx;\n            } else {\n                idx += 1;\n            }\n        }\n        if start < right_user {\n            segments.push(SummarySegment {\n                start,\n                end: right_user - 1,\n            });\n        }\n    }\n\n    segments\n}\n\nfn canonical_source_value(message: &ChatMessage) -> Value {\n    let mut value = serde_json::to_value(message).unwrap_or_else(|_| json!({}));",
+      "tool_call_id": "chatcmpl-tool-a97e02e26836477a8d66d20182f6b454",
+      "tool_failed": false
+    },
+    {
+      "message_id": "eb8da0ab-dfd4-4cd7-b3d9-c499c904e5fc",
+      "role": "assistant",
+      "content": "\n\n",
+      "finish_reason": "tool_calls",
+      "tool_calls": [
+        {
+          "id": "chatcmpl-tool-4a6bd54e28a747f09f83a87ce99615e8",
+          "index": 0,
+          "function": {
+            "arguments": "{\"pattern\": \"is_excluded_from_segment\", \"scope\": \".\"}",
+            "name": "refact_engine_search"
+          },
+          "type": "function"
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 5676,
+        "completion_tokens": 79,
+        "total_tokens": 5760,
+        "cache_read_input_tokens": 5
+      }
+    },
+    {
+      "message_id": "327c4b20-3fcf-4502-9f3d-228666239621",
+      "role": "tool",
+      "content": "refact-agent\\engine\\src\\chat\\summarization.rs:165: fn is_excluded_from_segment(message: &ChatMessage) -> bool {\nrefact-agent\\engine\\src\\chat\\summarization.rs:187:         while start < right_user && is_excluded_from_segment(&messages[start]) {\nrefact-agent\\engine\\src\\chat\\summarization.rs:192:             if is_excluded_from_segment(&messages[idx]) {\nrefact-agent\\engine\\src\\chat\\summarization.rs:200:                 while idx < right_user && is_excluded_from_segment(&messages[idx]) {",
+      "tool_call_id": "chatcmpl-tool-4a6bd54e28a747f09f83a87ce99615e8",
+      "tool_failed": false
+    }
+  ],
+  "created_at": "2026-06-19T09:41:01.794377200+00:00",
+  "boost_reasoning": false,
+  "checkpoints_enabled": true,
+  "context_tokens_cap": null,
+  "include_project_info": true,
+  "isTitleGenerated": false,
+  "auto_approve_editing_tools": false,
+  "auto_approve_dangerous_commands": false,
+  "autonomous_no_confirm": true,
+  "buddy_meta": {
+    "is_buddy_chat": true,
+    "buddy_chat_kind": "system",
+    "workflow_id": "refact_error_detective"
+  },
+  "root_chat_id": "buddy-refact_error_detective-32087042-87fb-4840-9a89-4e3dd0577112",
+  "updated_at": "2026-06-19T09:41:01.802487800+00:00",
+  "chat_id": "buddy-refact_error_detective-32087042-87fb-4840-9a89-4e3dd0577112"
+}

@@ -25,6 +25,8 @@ create table resident(
     gender varchar(50) not null check(gender='Male' or gender='Female'),
     address varchar(50) not null unique,
     foreign key(id) references professor(id)
+    on update cascade
+    on delete cascade
 );
 insert into resident(name, id, age, gender, address) VALUES
 ('Shivani', 7, 24, 'Female', 'Pune 1'),
@@ -36,10 +38,9 @@ insert into resident(name, id, age, gender, address) VALUES
 ('Barun', 6, 18, 'Male', 'Pune 7'),
 ('Vishal', 9, 17, 'Male', 'Pune 8');
 select* from resident;
-select * from professor where id in (select id from resident where age>20);
-select * from professor where id in (select id from resident where gender='Female');
-select * from professor where id in (select id from resident where address='Pune 1' or address='Pune 2');
-select * from professor where id in (select id from resident where age>20 and gender='Female');
+delete from professor where id=7;
+delete from professor where name='Mayank';
+delete from professor where department='Chemistry';
 drop table resident;
 drop table professor;
 drop database college;
