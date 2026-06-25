@@ -22,7 +22,7 @@ drop table student;
 alter table student add column email varchar(50);
 alter table student modify column email varchar(50) unique;
 alter table student rename column email to email_id;
-alter table student change column email_id address_perm varchar(250) not null;
+alter table student change column email_id address_perm varchar(250);
 alter table student drop column email_id;
 alter table student rename to student_info;
 select* from student_info;
