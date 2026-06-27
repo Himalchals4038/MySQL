@@ -36,6 +36,8 @@ create table hostel(
     password varchar(50) not null,
     room_no int not null,
     constraint fk_user foreign key(user_id) references student(id) on delete cascade
+    -- constraint fk_user foreign key(user_id) references student(id) on delete set null
+    -- constraint fk_user foreign key(user_id) references student(id) on delete restrict
 );
 INSERT INTO hostel (id, user_id, name, email, password, room_no) VALUES
 (1, 1, 'Rohan Mehra', 'rohan.mehra@example.com', 'pass123', 101),
