@@ -36,20 +36,12 @@ INSERT INTO student (name, email, grade, teacher_id, gender) VALUES
 ('Salman Khan', 'salman.khan@example.com', 10, 10, 'Male');
 select * from student;
 delimiter //
-create procedure add_student(
-    IN p_name varchar(50),
-    IN p_email varchar(50),
-    IN p_grade tinyint,
-    IN p_teacher_id int,
-    IN p_gender varchar(10)
-)
+create trigger update_grade
+after insert on student
+for each row
 begin
-    insert into student (name, email, grade, teacher_id, gender) values
-    (p_name, p_email, p_grade, p_teacher_id, p_gender);
-end //
+    update student set grade = grade + 1 where id = new.id;
+end//
 delimiter ;
-call add_student('Ramesh Babu', 'ramesh.babu@example.com', 10, 6, 'Male');
-select * from student where name = 'Ramesh Babu';
-show procedure status where db = 'users';
-drop procedure add_student;
+update student set grade = grade + 1 where mod(id, 2) = 0;
 drop table student;

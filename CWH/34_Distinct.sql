@@ -17,14 +17,14 @@ INSERT INTO student (name, email, grade, teacher_id, gender) VALUES
 ('Leela Menon', 'leela.menon@example.com', 10, 1, 'Female'),
 ('Nitin Bhat', 'nitin.bhat@example.com', 11, 2, 'Male'),
 ('Pooja Hegde', 'pooja.hegde@example.com', 9, 3, 'Female'),
-('Ravi Chandra', 'ravi.chandra@example.com', 12, 4, 'Male'),
+('Ravi Chandra', 'ravi.chandra@example.com', 12, 4, 'Other'),
 ('Shanti Kumar', 'shanti.kumar@example.com', 10, 5, 'Female'),
 ('Usha Yadav', 'usha.yadav@example.com', 11, 1, 'Female'),
 ('Vinod Khanna', 'vinod.khanna@example.com', 9, 2, 'Male'),
 ('Yash Chopra', 'yash.chopra@example.com', 12, 3, 'Male'),
 ('Zoya Akhtar', 'zoya.akhtar@example.com', 10, 4, 'Female'),
 ('Abhay Deol', 'abhay.deol@example.com', 11, 5, 'Male'),
-('Kareena Kapoor', 'kareena.kapoor@example.com', 9, 6, 'Female'),
+('Kareena Kapoor', 'kareena.kapoor@example.com', 9, 6, 'Other'),
 ('Shahid Kapoor', 'shahid.kapoor@example.com', 10, 7, 'Male'),
 ('Alia Bhatt', 'alia.bhatt@example.com', 11, 8, 'Female'),
 ('Ranbir Kapoor', 'ranbir.kapoor@example.com', 12, 9, 'Male'),
@@ -35,21 +35,6 @@ INSERT INTO student (name, email, grade, teacher_id, gender) VALUES
 ('Katrina Kaif', 'katrina.kaif@example.com', 9, 9, 'Female'),
 ('Salman Khan', 'salman.khan@example.com', 10, 10, 'Male');
 select * from student;
-delimiter //
-create procedure add_student(
-    IN p_name varchar(50),
-    IN p_email varchar(50),
-    IN p_grade tinyint,
-    IN p_teacher_id int,
-    IN p_gender varchar(10)
-)
-begin
-    insert into student (name, email, grade, teacher_id, gender) values
-    (p_name, p_email, p_grade, p_teacher_id, p_gender);
-end //
-delimiter ;
-call add_student('Ramesh Babu', 'ramesh.babu@example.com', 10, 6, 'Male');
-select * from student where name = 'Ramesh Babu';
-show procedure status where db = 'users';
-drop procedure add_student;
+select distinct grade from student;
+select distinct gender from student;
 drop table student;
